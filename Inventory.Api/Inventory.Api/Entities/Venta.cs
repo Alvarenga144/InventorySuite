@@ -13,10 +13,12 @@ namespace Inventory.Api.Entities
         [Column("fecha")]
         public DateTime Fecha { get; set; } = DateTime.UtcNow;
 
+        // FK al usuario vendedor
         [Required]
-        [MaxLength(100)]
-        [Column("vendedor")]
-        public string Vendedor { get; set; } = null!;
+        [Column("vendedor_id")]
+        public string VendedorId { get; set; } = null!;
+
+        public Usuario Vendedor { get; set; } = null!;
 
         [Precision(18, 2)]
         [Column("total")]
