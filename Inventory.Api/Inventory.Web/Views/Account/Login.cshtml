@@ -1,0 +1,55 @@
+@model Inventory.Web.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = "_LoginLayout";
+}
+
+<div class="login-header">
+    <h1>Inventory Suite</h1>
+    <p>Inicia sesión para continuar</p>
+</div>
+
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @TempData["InfoMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<form asp-action="Login" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Correo electrónico</label>
+        <input asp-for="Email" class="form-control" placeholder="correo@ejemplo.com" autofocus />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">Contraseña</label>
+        <input asp-for="Password" class="form-control" placeholder="••••••••" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary btn-lg">
+            Iniciar Sesión
+        </button>
+    </div>
+
+    <div class="divider">
+        <span>¿No tienes cuenta?</span>
+    </div>
+
+    <div class="d-grid">
+        <a asp-action="Register" class="btn btn-outline-secondary">
+            Crear cuenta nueva
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

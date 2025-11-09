@@ -1,0 +1,62 @@
+@model Inventory.Web.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Crear Cuenta";
+    Layout = "_LoginLayout";
+}
+
+<div class="login-header">
+    <h1>Inventory Suite</h1>
+    <p>Crea tu cuenta para comenzar</p>
+</div>
+
+<form asp-action="Register" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Nombre" class="form-label">Nombre</label>
+            <input asp-for="Nombre" class="form-control" placeholder="Juan" autofocus />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Apellido" class="form-label">Apellido</label>
+            <input asp-for="Apellido" class="form-control" placeholder="Pérez" />
+            <span asp-validation-for="Apellido" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Correo electrónico</label>
+        <input asp-for="Email" class="form-control" placeholder="correo@ejemplo.com" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">Contraseña</label>
+        <input asp-for="Password" class="form-control" placeholder="Mínimo 6 caracteres" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <small class="form-text text-muted">Debe tener al menos 6 caracteres</small>
+    </div>
+
+    <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary btn-lg">
+            Crear Cuenta
+        </button>
+    </div>
+
+    <div class="divider">
+        <span>¿Ya tienes cuenta?</span>
+    </div>
+
+    <div class="d-grid">
+        <a asp-action="Login" class="btn btn-outline-secondary">
+            Iniciar Sesión
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

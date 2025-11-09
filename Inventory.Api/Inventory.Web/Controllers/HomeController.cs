@@ -1,9 +1,13 @@
+using Inventory.Web.Filters;
+using Inventory.Web.Helpers;
 using Inventory.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+
 namespace Inventory.Web.Controllers
 {
+    [AuthorizeFilter]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,11 +19,10 @@ namespace Inventory.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            // Obtener datos del usuario desde la sesión
+            var userData = SessionHelper.GetUserData<UserSessionData>(HttpContext.Session);
+            ViewBag.UserName = userData != null ? $"{userData.Nombre} {userData.Apellido}" : "Usuario";
+            
             return View();
         }
 

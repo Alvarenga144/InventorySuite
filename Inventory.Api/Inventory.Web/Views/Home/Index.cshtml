@@ -1,8 +1,89 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-5 fw-bold">
+            ¡Bienvenido, @ViewBag.UserName! 👋
+        </h1>
+        <p class="text-muted">Aquí tienes un resumen de tu sistema de inventario y ventas</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Card: Productos -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-3" style="font-size: 3rem;">📦</div>
+                <h3 class="card-title h2 mb-2">--</h3>
+                <p class="text-muted mb-0">Total Productos</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center">
+                <a asp-controller="Productos" asp-action="Index" class="btn btn-sm btn-outline-primary">
+                    Ver Productos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card: Ventas del Día -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-3" style="font-size: 3rem;">💰</div>
+                <h3 class="card-title h2 mb-2">--</h3>
+                <p class="text-muted mb-0">Ventas Hoy</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center">
+                <a asp-controller="Ventas" asp-action="Index" class="btn btn-sm btn-outline-success">
+                    Ver Ventas
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card: Total Ventas Mes -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-3" style="font-size: 3rem;">📈</div>
+                <h3 class="card-title h2 mb-2">--</h3>
+                <p class="text-muted mb-0">Ventas del Mes</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center">
+                <a asp-controller="Reportes" asp-action="Index" class="btn btn-sm btn-outline-info">
+                    Ver Reportes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card: Nueva Venta -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="card-body text-center text-white">
+                <div class="mb-3" style="font-size: 3rem;">🛒</div>
+                <h3 class="card-title h2 mb-2">Nueva Venta</h3>
+                <p class="mb-0">Registra una venta</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center">
+                <a asp-controller="Ventas" asp-action="Create" class="btn btn-sm btn-light">
+                    Crear Venta
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info border-0" role="alert">
+            <h5 class="alert-heading">💡 ¿Sabías que...?</h5>
+            <p class="mb-0">
+                Puedes gestionar tu inventario, realizar ventas y generar reportes en PDF y Excel.
+            </p>
+        </div>
+    </div>
 </div>
