@@ -1,0 +1,399 @@
+{
+	"info": {
+		"_postman_id": "7a2566b5-45df-46f2-9762-6965e3eb1f06",
+		"name": "InventorySuite",
+		"description": "This postman collection is to test Inventory API, a basic system with auth, products and sells.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31847883"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Guardar token y expiración\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res.token, \"token faltante\").to.be.a(\"string\");\r",
+									"\r",
+									"    // Guardar el token\r",
+									"    pm.collectionVariables.set(\"access_token\", res.token);\r",
+									"\r",
+									"    // Convertir la fecha a timestamp y guardar\r",
+									"    const expTimestamp = new Date(res.expiration).getTime();\r",
+									"    pm.collectionVariables.set(\"token_expires_at\", expTimestamp);\r",
+									"\r",
+									"    console.log(\"Nuevo token guardado en collection variables\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"ealvarenga@gmail.com\",\r\n  \"password\": \"@dmin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/Auth/login",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Guardar token y expiración\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res.token, \"token faltante\").to.be.a(\"string\");\r",
+									"\r",
+									"    // Guardar el token\r",
+									"    pm.collectionVariables.set(\"access_token\", res.token);\r",
+									"\r",
+									"    // Convertir la fecha a timestamp y guardar\r",
+									"    const expTimestamp = new Date(res.expiration).getTime();\r",
+									"    pm.collectionVariables.set(\"token_expires_at\", expTimestamp);\r",
+									"\r",
+									"    console.log(\"Nuevo token guardado en collection variables\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"(function checkToken() {\r",
+									"    const token = pm.collectionVariables.get(\"access_token\");\r",
+									"    const exp = Number(pm.collectionVariables.get(\"token_expires_at\") || 0);\r",
+									"    const now = Date.now();\r",
+									"\r",
+									"    if (!token || now >= exp) {\r",
+									"        throw new Error(\"Token expirado o no existe. Ejecuta el request de Login.\");\r",
+									"    }\r",
+									"})();\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Esteban\",\r\n  \"apellido\": \"Alvarenga\",\r\n  \"email\": \"ealvarenga@gmail.com\",\r\n  \"password\": \"@dmin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/Auth/login",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/Productos",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"producto\": \"Leche deslactosada\",\r\n  \"precio\": 2.70\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/Productos",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos/id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/Productos/{{product_ids}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Productos",
+								"{{product_ids}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "123",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos/id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"producto\": \"Bebida Energizante Monster Mango\",\r\n  \"precio\": 2.50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/Productos/{{product_ids}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Productos",
+								"{{product_ids}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "123",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Productos/id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/Productos/{{product_ids}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Productos",
+								"{{product_ids}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "123",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ventas",
+			"item": [
+				{
+					"name": "Ventas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/Ventas",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Ventas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ventas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/Ventas",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Ventas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ventas/id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/Ventas/{{ventas_ids}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"Ventas",
+								"{{ventas_ids}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "token_expires_at",
+			"value": ""
+		},
+		{
+			"key": "product_ids",
+			"value": ""
+		},
+		{
+			"key": "ventas_ids",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
