@@ -1,0 +1,101 @@
+@model List<Inventory.Web.Models.ViewModels.ProductoViewModel>
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Gestión de Productos</h2>
+    <a asp-action="Create" class="btn btn-primary">
+        Nuevo Producto
+    </a>
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        <h5 class="alert-heading">No hay productos registrados</h5>
+        <p class="mb-0">Comienza agregando tu primer producto haciendo clic en "Nuevo Producto"</p>
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th class="text-end">Precio</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var producto in Model)
+                        {
+                            <tr>
+                                <td><strong>#@producto.IdPro</strong></td>
+                                <td>@producto.Producto</td>
+                                <td class="text-end">
+                                    <strong>$@producto.Precio.ToString("N2")</strong>
+                                </td>
+                                <td>
+                                    @if (producto.Activo)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="Edit" asp-route-id="@producto.IdPro" 
+                                       class="btn btn-sm btn-outline-primary" 
+                                       title="Editar">
+                                        Editar
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@producto.IdPro" 
+                                          method="post" 
+                                          class="d-inline delete-form">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" 
+                                                class="btn btn-sm btn-outline-danger"
+                                                data-producto="@producto.Producto"
+                                                title="Eliminar">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3 text-muted">
+        <small>Total de productos: <strong>@Model.Count</strong></small>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        // Confirmación antes de eliminar
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const productoNombre = this.querySelector('button').dataset.producto;
+                
+                if (confirm(`¿Está seguro de eliminar el producto "${productoNombre}"?\n\nEsta acción no se puede deshacer.`)) {
+                    this.submit();
+                }
+            });
+        });
+    </script>
+}
+
