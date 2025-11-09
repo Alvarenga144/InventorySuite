@@ -13,63 +13,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Inventory Suite</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
-        .navbar-brand {
-            font-weight: 600;
-            color: #667eea !important;
-            font-size: 1.5rem;
-        }
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .nav-link {
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .nav-link:hover {
-            color: #667eea !important;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .navbar-brand { font-weight: 600; font-size: 1.25rem; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
         .user-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
+            width: 35px; height: 35px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--brand-gray-100); color: var(--brand-accent); font-weight: 700;
         }
-        .btn-logout {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .btn-logout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-            color: white;
-        }
-        footer {
-            margin-top: 50px;
-            padding: 20px 0;
-            background: #f8f9fa;
-        }
+        footer { margin-top: 50px; padding: 20px 0; background: #f8f9fa; }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                     Inventory Suite
@@ -109,8 +68,9 @@
                         </span>
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-logout btn-sm">
-                                Cerrar Sesión
+                            <button type="submit" class="btn btn-outline-secondary btn-sm btn-icon" title="Cerrar Sesión" aria-label="Cerrar Sesión">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span class="visually-hidden">Cerrar Sesión</span>
                             </button>
                         </form>
                     </div>

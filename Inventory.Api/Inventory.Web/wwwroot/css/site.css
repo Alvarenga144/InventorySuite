@@ -20,3 +20,94 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Theme: neutral UI with red accent */
+:root {
+  --brand-accent: #e5002b;
+  --brand-accent-rgb: 229, 0, 43;
+  --brand-gray-50: #f6f7f9;
+  --brand-gray-100: #f1f3f5;
+  --brand-gray-200: #e9ecef;
+  --brand-gray-600: #6c757d;
+  --brand-gray-900: #212529;
+
+  /* Bootstrap color overrides */
+  --bs-primary: var(--brand-accent);
+  --bs-link-color: var(--brand-accent);
+  --bs-link-hover-color: #c00022;
+}
+
+body {
+  background-color: var(--brand-gray-50);
+  color: var(--brand-gray-900);
+}
+
+/* Focus ring aligned to brand */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(var(--brand-accent-rgb), .35);
+  border-color: var(--brand-accent);
+}
+
+/* Primary buttons use brand */
+.btn-primary {
+  background-color: var(--brand-accent);
+  border-color: var(--brand-accent);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #c00022;
+  border-color: #c00022;
+}
+.btn-outline-primary {
+  color: var(--brand-accent);
+  border-color: var(--brand-accent);
+}
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: rgba(var(--brand-accent-rgb), .08);
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+}
+
+/* Subtle cards and table headers */
+.card {
+  border: 1px solid var(--brand-gray-200);
+  border-radius: .75rem;
+  background-color: #fff;
+}
+.card-header.bg-primary, .bg-primary {
+  background-color: var(--brand-accent) !important;
+}
+.table thead.table-light th {
+  color: var(--brand-gray-900);
+}
+
+/* Navbar tweaks */
+.navbar {
+  background-color: #fff;
+  border-bottom: 1px solid var(--brand-gray-200);
+}
+.navbar-light .navbar-brand {
+  color: var(--brand-accent);
+}
+.navbar-light .navbar-nav .nav-link:hover {
+  color: var(--brand-accent);
+}
+
+/* Icon-only button utility */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: .5rem;
+}
+.btn-icon.btn-sm {
+  width: 2rem;
+  height: 2rem;
+  border-radius: .375rem;
+}
+.btn-icon i {
+  font-size: 1rem;
+  line-height: 1;
+}
