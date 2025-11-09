@@ -134,6 +134,12 @@ namespace Inventory.Web.Controllers
 
                 if (response.Success && response.Data != null)
                 {
+                    // Validar que el producto esté activo
+                    if (!response.Data.Activo)
+                    {
+                        return Json(new { success = false, message = "El producto está desactivado y no puede ser vendido" });
+                    }
+
                     return Json(new { success = true, data = response.Data });
                 }
                 else

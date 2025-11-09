@@ -19,6 +19,10 @@ namespace Inventory.Web.Services
         Task<ApiResponse<List<VentaViewModel>>> GetVentasAsync(string? token);
         Task<ApiResponse<VentaViewModel>> GetVentaByIdAsync(int id, string? token);
         Task<ApiResponse<VentaViewModel>> CreateVentaAsync(CreateVentaViewModel model, string? token);
+
+        // Reportes
+        Task<ApiResponse<ReporteVentaCompletoViewModel>> GetReporteVentasAsync(string? vendedorId, string? token);
+        Task<ApiResponse<List<VendedorViewModel>>> GetVendedoresAsync(string? token);
     }
 
     // Clase auxiliar para manejar respuestas de la API

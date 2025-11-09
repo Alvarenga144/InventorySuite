@@ -14,6 +14,15 @@
     </div>
 </div>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong>
+        <div asp-validation-summary="ModelOnly" class="mb-0"></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
 <div class="row">
     <div class="col-md-8">
         <!-- Sección: Buscar Producto -->

@@ -81,6 +81,25 @@ namespace Inventory.Web.Services
 
         #endregion
 
+        #region Reportes
+
+        public async Task<ApiResponse<ReporteVentaCompletoViewModel>> GetReporteVentasAsync(string? vendedorId, string? token)
+        {
+            var endpoint = "/api/reportes/ventas";
+            if (!string.IsNullOrEmpty(vendedorId))
+            {
+                endpoint += $"?vendedorId={vendedorId}";
+            }
+            return await GetAsync<ReporteVentaCompletoViewModel>(endpoint, token);
+        }
+
+        public async Task<ApiResponse<List<VendedorViewModel>>> GetVendedoresAsync(string? token)
+        {
+            return await GetAsync<List<VendedorViewModel>>("/api/reportes/vendedores", token);
+        }
+
+        #endregion
+
         #region HTTP Methods
 
         private async Task<ApiResponse<TResponse>> GetAsync<TResponse>(string endpoint, string? token = null)
