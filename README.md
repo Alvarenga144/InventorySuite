@@ -21,6 +21,42 @@ Sistema de gestión de inventario y ventas construido en .NET 8. La solución in
 - `Inventory.Web`: cliente MVC que consume la API mediante `HttpClient`, maneja sesión con JWT y ofrece UI para la operación diaria, generación de PDF (QuestPDF) y Excel (ClosedXML).
 - `docs/`: recursos adicionales como la colección de Postman y scripts SQL (incluye `sp_ReporteVentas.sql`).
 
+### Diagrama Inventory.Api
+```mermaid
+flowchart LR
+    subgraph Cliente Externo
+        Swagger
+        Postman
+        AppMovil[Cliente externo]
+    end
+
+    Swagger -->|JWT + HTTPS| API[(Inventory.Api)]
+    Postman -->|JWT + HTTPS| API
+    AppMovil -->|JWT + HTTPS| API
+
+    API -->|EF Core| DB[(SQL Server)]
+    DB -->|Procedimiento sp_ReporteVentas| API
+```
+
+### Diagrama Inventory.Web (MVC)
+```mermaid
+sequenceDiagram
+    participant Usuario
+    participant MVC as Inventory.Web (MVC)
+    participant ApiSvc as ApiService (HttpClient)
+    participant API as Inventory.Api
+    participant DB as SQL Server
+
+    Usuario->>MVC: Login / Acceder a vistas
+    MVC->>ApiSvc: Solicita datos (agrega JWT de sesión)
+    ApiSvc->>API: HTTP Request (JSON, Bearer Token)
+    API->>DB: EF Core / Stored Procedure
+    DB-->>API: Datos de inventario/ventas
+    API-->>ApiSvc: Respuesta JSON
+    ApiSvc-->>MVC: ViewModels
+    MVC-->>Usuario: Renderiza vistas Razor / recursos estáticos
+```
+
 ## Características principales
 - Autenticación y registro de usuarios con ASP.NET Identity y JWT.
 - CRUD completo de productos con validaciones y “soft delete”.
