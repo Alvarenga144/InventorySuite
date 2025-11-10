@@ -1,0 +1,132 @@
+@model Inventory.Web.Models.ViewModels.CreateVentaViewModel
+@{
+    ViewData["Title"] = "Nueva Venta";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Nueva Venta</h2>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Cancelar
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong>
+        <div asp-validation-summary="ModelOnly" class="mb-0"></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <!-- Sección: Buscar Producto -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Buscar Producto</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="codigoProducto" class="form-label">Código del Producto</label>
+                        <input type="number" 
+                               id="codigoProducto" 
+                               class="form-control" 
+                               placeholder="Ingrese el código del producto"
+                               autofocus>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" 
+                                id="btnBuscarProducto" 
+                                class="btn btn-primary w-100">
+                            <i class="bi bi-search me-1"></i>
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+                <div id="mensajeBusqueda" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Sección: Productos Agregados -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Productos Agregados</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="tablaProductos">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Producto</th>
+                                <th class="text-end">Precio Unit.</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">IVA (13%)</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyProductos">
+                            <!-- Filas se agregan dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="mensajeTablaVacia" class="text-center p-4 text-muted">
+                    No hay productos agregados. Busque y agregue productos para comenzar.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <!-- Sección: Resumen -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Resumen de Venta</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <strong id="resumenSubtotal">$0.00</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>IVA (13%):</span>
+                    <strong id="resumenIva">$0.00</strong>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-4">
+                    <h5 class="mb-0">TOTAL:</h5>
+                    <h5 class="mb-0" id="resumenTotal" style="color: var(--brand-accent);">$0.00</h5>
+                </div>
+
+                <form asp-action="Create" method="post" id="formVenta">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="detallesJson" name="detallesJson" />
+                    
+                    <div class="d-grid">
+                        <button type="button" 
+                                id="btnRegistrarVenta" 
+                                class="btn btn-primary btn-lg">
+                            <i class="bi bi-check2-circle me-1"></i>
+                            Registrar Venta
+                        </button>
+                    </div>
+                </form>
+
+                <div id="mensajeError" class="alert alert-danger mt-3" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/ventas.js" asp-append-version="true"></script>
+}
+

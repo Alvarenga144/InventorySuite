@@ -1,0 +1,172 @@
+@model Inventory.Web.Models.ViewModels.ReporteVentaCompletoViewModel
+@{
+    ViewData["Title"] = "Reportes de Ventas";
+    var vendedores = ViewBag.Vendedores as List<Inventory.Web.Models.ViewModels.VendedorViewModel> ?? new List<Inventory.Web.Models.ViewModels.VendedorViewModel>();
+    var vendedorSeleccionado = ViewBag.VendedorSeleccionado as string;
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="mb-3">
+            <i class="bi bi-file-earmark-bar-graph"></i> Reportes de Ventas
+        </h2>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Filtros del Reporte</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-8">
+                <label for="vendedorId" class="form-label">Vendedor</label>
+                <select name="vendedorId" id="vendedorId" class="form-select">
+                    <option value="">Todos los vendedores</option>
+                    @foreach (var vendedor in vendedores)
+                    {
+                        <option value="@vendedor.Id" selected="@(vendedor.Id == vendedorSeleccionado)">
+                            @vendedor.NombreCompleto
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" name="generar" value="true" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Generar Reporte
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Ventas.Any())
+{
+    <!-- Botones de descarga -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-2 mb-md-0">
+                    <a asp-action="DescargarPDF" asp-route-vendedorId="@vendedorSeleccionado" class="btn btn-danger w-100">
+                        <i class="bi bi-file-pdf"></i> Descargar PDF
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="DescargarExcel" asp-route-vendedorId="@vendedorSeleccionado" class="btn btn-success w-100">
+                        <i class="bi bi-file-excel"></i> Descargar Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de resultados -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Resultados del Reporte</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Fecha</th>
+                            <th>Vendedor</th>
+                            <th>Producto</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-end">Precio Unit.</th>
+                            <th class="text-end">IVA</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var venta in Model.Ventas)
+                        {
+                            bool primeraLinea = true;
+                            foreach (var detalle in venta.Detalles)
+                            {
+                                <tr>
+                                    @if (primeraLinea)
+                                    {
+                                        <td rowspan="@(venta.Detalles.Count + 1)" class="align-middle">
+                                            <strong>#@venta.IdVenta</strong>
+                                        </td>
+                                        <td rowspan="@(venta.Detalles.Count + 1)" class="align-middle">
+                                            @venta.Fecha.ToString("dd/MM/yyyy HH:mm")
+                                        </td>
+                                        <td rowspan="@(venta.Detalles.Count + 1)" class="align-middle">
+                                            <strong>@venta.NombreVendedor</strong><br />
+                                            <small class="text-muted">@venta.EmailVendedor</small>
+                                        </td>
+                                        primeraLinea = false;
+                                    }
+                                    <td>@detalle.NombreProducto</td>
+                                    <td class="text-center">@detalle.Cantidad</td>
+                                    <td class="text-end">$@detalle.PrecioUnitario.ToString("N2")</td>
+                                    <td class="text-end">$@detalle.Iva.ToString("N2")</td>
+                                    <td class="text-end">$@detalle.TotalDetalle.ToString("N2")</td>
+                                </tr>
+                            }
+                            <tr class="table-warning">
+                                <td colspan="4" class="text-end"><strong>Total de la Venta:</strong></td>
+                                <td class="text-end"><strong>$@venta.Total.ToString("N2")</strong></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen General -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Resumen General</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-light rounded">
+                        <h6 class="text-muted mb-2">Total de Ventas</h6>
+                        <h3 class="mb-0">@Model.Resumen.TotalVentas</h3>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-light rounded">
+                        <h6 class="text-muted mb-2">Productos Vendidos</h6>
+                        <h3 class="mb-0">@Model.Resumen.TotalProductosVendidos</h3>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-light rounded">
+                        <h6 class="text-muted mb-2">IVA Total</h6>
+                        <h3 class="mb-0">$@Model.Resumen.IvaTotal.ToString("N2")</h3>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 rounded" style="background-color: var(--brand-gray-100);">
+                        <h6 class="mb-2">MONTO TOTAL</h6>
+                        <h3 class="mb-0 fw-bold" style="color: var(--brand-accent);">$@Model.Resumen.MontoTotal.ToString("N2")</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        <i class="bi bi-info-circle"></i> 
+        <strong>Información:</strong> Seleccione un vendedor y haga clic en "Generar Reporte" para ver los resultados.
+        @if (Context.Request.Query.ContainsKey("generar"))
+        {
+            <br />
+            <span class="text-muted">No se encontraron ventas con los filtros seleccionados.</span>
+        }
+    </div>
+}
+
+@section Scripts { }
+
